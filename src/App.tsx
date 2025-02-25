@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ChooseTemplate } from "./features/choose-template";
 import { Stepper, StepperContent } from "@/components/ui/stepper";
+import { PersonalDetails } from "./features/personal-details";
 
 const steps = [
   {
@@ -30,6 +31,9 @@ function App() {
       />
       <StepperContent step={1} currentStep={currentStep}>
         <ChooseTemplate />
+      </StepperContent>
+      <StepperContent step={2} currentStep={currentStep}>
+        <PersonalDetails />
       </StepperContent>
     </div>
   );
