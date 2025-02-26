@@ -1,4 +1,4 @@
-import { FC, useMemo } from "react";
+import { FC, lazy, useMemo } from "react";
 import { UseFormReturn } from "react-hook-form";
 import {
   FormField as FormFieldUI,
@@ -102,61 +102,30 @@ const fields = [
   },
 ];
 
-const TextField: FC<any> = ({ field, placeholder }) => (
-  <FormControl>
-    <Input placeholder={placeholder} {...field} />
-  </FormControl>
+const TextField = lazy(() =>
+  import("@/components/form-fields").then((m) => ({
+    default: m.TextField,
+  }))
 );
-
-const DateField: FC<any> = ({ field }) => (
-  <DatePicker date={field.value} onDateChange={field.onChange} />
+const DateField = lazy(() =>
+  import("@/components/form-fields").then((m) => ({
+    default: m.DateField,
+  }))
 );
-
-const SwitchField: FC<any> = ({ field, name, placeholder }) => (
-  <FormControl className="flex">
-    <div className="flex items-center space-x-2">
-      <Switch
-        id={name}
-        checked={field.value === "yes"}
-        onCheckedChange={(v) => field.onChange(v ? "yes" : "no")}
-      />
-      <Label htmlFor={name} className="font-normal text-muted-foreground">
-        {placeholder}
-      </Label>
-    </div>
-  </FormControl>
+const SelectField = lazy(() =>
+  import("@/components/form-fields").then((m) => ({
+    default: m.SelectField,
+  }))
 );
-
-const SelectField: FC<any> = ({ field, options }) => (
-  <Select value={field.value} onValueChange={field.onChange}>
-    <FormControl>
-      <SelectTrigger>
-        <SelectValue placeholder="Select" />
-      </SelectTrigger>
-    </FormControl>
-    <SelectContent>
-      {options?.map((opt: { [key: string]: string }) => (
-        <SelectItem key={opt.value} value={opt.value}>
-          {opt.label}
-        </SelectItem>
-      ))}
-    </SelectContent>
-  </Select>
+const SwitchField = lazy(() =>
+  import("@/components/form-fields").then((m) => ({
+    default: m.SwitchField,
+  }))
 );
-
-const MultiSelectField: FC<any> = ({ field, options, placeholder }) => (
-  <MultipleSelector
-    defaultOptions={options}
-    placeholder={placeholder}
-    value={field.value}
-    onChange={field.onChange}
-    hidePlaceholderWhenSelected
-    emptyIndicator={
-      <p className="text-center text-xs leading-10 text-gray-600 dark:text-gray-400">
-        no results found.
-      </p>
-    }
-  />
+const MultiSelectField = lazy(() =>
+  import("@/components/form-fields").then((m) => ({
+    default: m.MultiSelectField,
+  }))
 );
 
 export const FormField: FC<Props> = ({ form }) => {

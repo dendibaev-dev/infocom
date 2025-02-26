@@ -9,6 +9,7 @@ interface Props {
 
 export const WorkExperienceTable: FC<Props> = ({ form, className }) => {
   const { control } = form;
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: "workExperience",
@@ -40,7 +41,12 @@ export const WorkExperienceTable: FC<Props> = ({ form, className }) => {
         ]}
         fields={fields}
         append={() =>
-          append({ organization: "", dateFrom: null, dateTo: null })
+          append(
+            { organization: "", dateFrom: null, dateTo: null },
+            {
+              shouldFocus: false,
+            }
+          )
         }
         remove={remove}
         form={form}

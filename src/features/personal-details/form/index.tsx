@@ -30,7 +30,7 @@ export const Form: FC<Props> = ({ initialValues, onSubmit }) => {
       >
         <FormField form={form} />
         <WorkExperienceTable form={form} className="col-span-2" />
-        <InfoRelativesTable form={form} className="col-span-2" />
+        {/* <InfoRelativesTable form={form} className="col-span-2" /> */}
         <Separator className="col-span-2" />
         <div className="col-span-2 flex items-center gap-2">
           <Button variant="outline">Go back</Button>

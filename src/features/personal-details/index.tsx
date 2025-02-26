@@ -15,7 +15,7 @@ export const formSchema = z.object({
   partyAffiliation: z.string(),
   education: z.string(),
   specialization: z.string(),
-  foreignLanguages: z.array(foreignLanguageSchema).min(1),
+  foreignLanguages: z.array(foreignLanguageSchema),
   militaryRank: z.string(),
   stateAndDepartmentalAwards: z.string(),
   workExperience: z
@@ -33,9 +33,9 @@ export const formSchema = z.object({
         fullName: z.string().min(1, "Full name is required"),
         degreeOfKinship: z.string().min(1, "Degree Of Kinship is required"),
         dateOfBirth: z.date().nullable(),
-        placeOfWork: z.string().min(1, "Place Of Work is required"),
-        position: z.string().min(1, "Position is required"),
-        address: z.string().min(1, "Address is required"),
+        placeOfWork: z.string(),
+        position: z.string(),
+        address: z.string(),
       })
     )
     .min(1, "At least one relative must be added"),
@@ -71,7 +71,7 @@ export const PersonalDetails = () => {
           informationAboutRelatives: [
             {
               fullName: "",
-              degreeOfKinship: "",
+              degreeOfKinship: "relative",
               dateOfBirth: null,
               placeOfWork: "",
               position: "",

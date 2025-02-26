@@ -69,14 +69,19 @@ export const InfoRelativesTable: FC<Props> = ({ form, className }) => {
         ]}
         fields={fields}
         append={() =>
-          append({
-            fullName: "",
-            degreeOfKinship: "",
-            dateOfBirth: null,
-            placeOfWork: "",
-            position: "",
-            address: "",
-          })
+          append(
+            {
+              fullName: "",
+              degreeOfKinship: "relative",
+              dateOfBirth: null,
+              placeOfWork: "",
+              position: "",
+              address: "",
+            },
+            {
+              shouldFocus: false,
+            }
+          )
         }
         remove={remove}
         form={form}
