@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ChooseTemplate } from "./features/choose-template";
 import { Stepper, StepperContent } from "@/components/ui/stepper";
 import { PersonalDetails } from "./features/personal-details";
+import { GenerateDocument } from "./features/generate-document";
 
 const steps = [
   {
@@ -19,7 +20,7 @@ const steps = [
 ];
 
 function App() {
-  const [currentStep, setCurrentStep] = useState(2);
+  const [currentStep, setCurrentStep] = useState(3);
 
   return (
     <div className="container mt-4">
@@ -34,6 +35,9 @@ function App() {
       </StepperContent>
       <StepperContent step={2} currentStep={currentStep}>
         <PersonalDetails />
+      </StepperContent>
+      <StepperContent step={3} currentStep={currentStep}>
+        <GenerateDocument />
       </StepperContent>
     </div>
   );
