@@ -1,5 +1,5 @@
 import * as React from "react";
-import { format, isValid, parse } from "date-fns";
+import { isValid, parse, format, startOfMonth } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -16,9 +16,20 @@ interface DatePickerProps {
   date: Date | undefined;
   onDateChange: (date: Date | undefined) => void;
   className?: string;
+  /**
+   * Format pattern for the date
+   * - "dd.MM.yyyy" - Day, month, year (default)
+   * - "MM.yyyy" - Month and year only
+   */
+  dateFormat?: "dd.MM.yyyy" | "MM.yyyy";
 }
 
-export function DatePicker({ date, onDateChange, className }: DatePickerProps) {
+export function DatePicker({
+  date,
+  onDateChange,
+  className,
+  dateFormat = "dd.MM.yyyy", // default format
+}: DatePickerProps) {
   const [isOpen, setIsOpen] = React.useState(false);
   const [inputValue, setInputValue] = React.useState<string>("");
   const [error, setError] = React.useState<string>("");
@@ -27,35 +38,60 @@ export function DatePicker({ date, onDateChange, className }: DatePickerProps) {
     date
   );
 
+  // Get format specific configurations
+  const formatConfig = React.useMemo(() => {
+    const configs = {
+      "dd.MM.yyyy": {
+        placeholder: "DD.MM.YYYY",
+        maxLength: 10,
+        digitsLength: 8,
+        formatDots: (digits: string) => {
+          let result = "";
+          for (let i = 0; i < digits.length; i++) {
+            if (i === 2 || i === 4) result += ".";
+            result += digits[i];
+          }
+          return result;
+        },
+      },
+      "MM.yyyy": {
+        placeholder: "MM.YYYY",
+        maxLength: 7,
+        digitsLength: 6,
+        formatDots: (digits: string) => {
+          let result = "";
+          for (let i = 0; i < digits.length; i++) {
+            if (i === 2) result += ".";
+            result += digits[i];
+          }
+          return result;
+        },
+      },
+    };
+    return configs[dateFormat];
+  }, [dateFormat]);
+
   // Update input value and calendar date when date changes externally
   React.useEffect(() => {
     if (date) {
-      setInputValue(format(date, "dd.MM.yyyy"));
+      setInputValue(format(date, dateFormat));
       setCalendarDate(date);
     } else {
       setInputValue("");
       setCalendarDate(undefined);
     }
-  }, [date]);
+  }, [date, dateFormat]);
 
   // Format input value with dots
   const formatInputValue = (value: string) => {
     // Remove all non-digits
     const digits = value.replace(/\D/g, "");
 
-    // Limit to 8 digits (ddMMYYYY)
-    const limitedDigits = digits.slice(0, 8);
+    // Limit to max digits
+    const limitedDigits = digits.slice(0, formatConfig.digitsLength);
 
-    // Add dots after day and month
-    let formattedValue = "";
-    for (let i = 0; i < limitedDigits.length; i++) {
-      if (i === 2 || i === 4) {
-        formattedValue += ".";
-      }
-      formattedValue += limitedDigits[i];
-    }
-
-    return formattedValue;
+    // Add dots according to format
+    return formatConfig.formatDots(limitedDigits);
   };
 
   // Handle manual date input
@@ -66,12 +102,15 @@ export function DatePicker({ date, onDateChange, className }: DatePickerProps) {
     setError("");
 
     // Only attempt to parse if we have a complete date
-    if (formattedValue.length === 10) {
-      const parsedDate = parse(formattedValue, "dd.MM.yyyy", new Date());
+    if (formattedValue.length === formatConfig.maxLength) {
+      const parsedDate = parse(formattedValue, dateFormat, new Date());
 
       if (isValid(parsedDate)) {
-        onDateChange(parsedDate);
-        setCalendarDate(parsedDate); // Update calendar date when input is valid
+        // For MM.yyyy format, set the date to the start of the month
+        const finalDate =
+          dateFormat === "MM.yyyy" ? startOfMonth(parsedDate) : parsedDate;
+        onDateChange(finalDate);
+        setCalendarDate(finalDate);
       } else {
         setError("Invalid date");
       }
@@ -83,8 +122,16 @@ export function DatePicker({ date, onDateChange, className }: DatePickerProps) {
 
   // Handle calendar selection
   const handleCalendarSelect = (newDate: Date | undefined) => {
-    onDateChange(newDate);
-    setCalendarDate(newDate);
+    if (newDate) {
+      // For MM.yyyy format, set the date to the start of the month
+      const finalDate =
+        dateFormat === "MM.yyyy" ? startOfMonth(newDate) : newDate;
+      onDateChange(finalDate);
+      setCalendarDate(finalDate);
+    } else {
+      onDateChange(undefined);
+      setCalendarDate(undefined);
+    }
     setIsOpen(false);
     inputRef.current?.focus();
   };
@@ -125,7 +172,7 @@ export function DatePicker({ date, onDateChange, className }: DatePickerProps) {
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
             onFocus={(e) => e.target.select()}
-            placeholder="DD.MM.YYYY"
+            placeholder={formatConfig.placeholder}
             className={cn("pl-10", error && "border-destructive", className)}
           />
           <PopoverTrigger asChild>
@@ -153,6 +200,12 @@ export function DatePicker({ date, onDateChange, className }: DatePickerProps) {
             onSelect={handleCalendarSelect}
             initialFocus
             weekStartsOn={1}
+            showOutsideDays={dateFormat === "dd.MM.yyyy"}
+            {...(dateFormat === "MM.yyyy" && {
+              fromMonth: new Date(2000, 0),
+              toMonth: new Date(2100, 11),
+              disabled: false,
+            })}
           />
         </PopoverContent>
       </Popover>

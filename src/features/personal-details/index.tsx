@@ -18,8 +18,27 @@ export const formSchema = z.object({
   foreignLanguages: z.array(foreignLanguageSchema).min(1),
   militaryRank: z.string(),
   stateAndDepartmentalAwards: z.string(),
-  workExperience: z.string(),
-  informationAboutRelatives: z.string(),
+  workExperience: z
+    .array(
+      z.object({
+        organization: z.string().min(1, "Organization name is required"),
+        dateFrom: z.date().nullable(),
+        dateTo: z.date().nullable(),
+      })
+    )
+    .min(1, "At least one work experience entry is required"),
+  informationAboutRelatives: z
+    .array(
+      z.object({
+        fullName: z.string().min(1, "Full name is required"),
+        degreeOfKinship: z.string().min(1, "Degree Of Kinship is required"),
+        dateOfBirth: z.date().nullable(),
+        placeOfWork: z.string().min(1, "Place Of Work is required"),
+        position: z.string().min(1, "Position is required"),
+        address: z.string().min(1, "Address is required"),
+      })
+    )
+    .min(1, "At least one relative must be added"),
 });
 
 export const PersonalDetails = () => {
@@ -28,7 +47,7 @@ export const PersonalDetails = () => {
   }
 
   return (
-    <div className="w-full max-w-3xl mx-auto">
+    <div className="w-full mx-auto">
       <Form
         onSubmit={submitForm}
         initialValues={{
@@ -42,8 +61,23 @@ export const PersonalDetails = () => {
           foreignLanguages: [],
           militaryRank: "",
           stateAndDepartmentalAwards: "",
-          workExperience: "",
-          informationAboutRelatives: "",
+          workExperience: [
+            {
+              organization: "",
+              dateFrom: null,
+              dateTo: null,
+            },
+          ],
+          informationAboutRelatives: [
+            {
+              fullName: "",
+              degreeOfKinship: "",
+              dateOfBirth: null,
+              placeOfWork: "",
+              position: "",
+              address: "",
+            },
+          ],
         }}
       />
     </div>
