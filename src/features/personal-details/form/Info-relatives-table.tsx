@@ -1,6 +1,6 @@
-import { EditableTable } from "@/components/editable-table";
 import { FC } from "react";
 import { useFieldArray, UseFormReturn } from "react-hook-form";
+import { EditableTable } from "@/components/editable-table";
 
 interface Props {
   form: UseFormReturn<any>;

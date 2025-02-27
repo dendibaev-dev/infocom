@@ -4,21 +4,8 @@ import {
   FormField as FormFieldUI,
   FormItem,
   FormLabel,
-  FormControl,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
-import MultipleSelector from "@/components/ui/multiple-selector";
-import { Label } from "@/components/ui/label";
-import { DatePicker } from "@/components/ui/date-picker";
 
 interface Props {
   form: UseFormReturn<any>;

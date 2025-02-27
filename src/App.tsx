@@ -3,6 +3,8 @@ import { ChooseTemplate } from "./features/choose-template";
 import { Stepper, StepperContent } from "@/components/ui/stepper";
 import { PersonalDetails } from "./features/personal-details";
 import { GenerateDocument } from "./features/generate-document";
+import { Provider } from "./provider";
+import { useAppContext } from "./hooks/useAppContext";
 
 const steps = [
   {
@@ -20,23 +22,23 @@ const steps = [
 ];
 
 function App() {
-  const [currentStep, setCurrentStep] = useState(3);
+  const { currentScreen, setCurrentScreen } = useAppContext();
 
   return (
     <div className="container mt-4">
       <Stepper
         steps={steps}
-        currentStep={currentStep}
-        onStepClick={setCurrentStep}
+        currentStep={currentScreen}
+        onStepClick={setCurrentScreen}
         className="mb-8 w-1/2 mx-auto"
       />
-      <StepperContent step={1} currentStep={currentStep}>
+      <StepperContent step={1} currentStep={currentScreen}>
         <ChooseTemplate />
       </StepperContent>
-      <StepperContent step={2} currentStep={currentStep}>
+      <StepperContent step={2} currentStep={currentScreen}>
         <PersonalDetails />
       </StepperContent>
-      <StepperContent step={3} currentStep={currentStep}>
+      <StepperContent step={3} currentStep={currentScreen}>
         <GenerateDocument />
       </StepperContent>
     </div>

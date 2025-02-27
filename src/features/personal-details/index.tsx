@@ -1,85 +1,53 @@
 import { z } from "zod";
+import { useAppContext } from "@/hooks/useAppContext";
 import { Form } from "./form";
 
 const foreignLanguageSchema = z.object({
   label: z.string(),
   value: z.string(),
-  disable: z.boolean().optional(),
 });
 
 export const formSchema = z.object({
-  fullName: z.string(),
-  dateOfBirth: z.date(),
-  placeOfBirth: z.string(),
-  nationality: z.string(),
+  fullName: z.string().min(10, "required"),
+  dateOfBirth: z.date().refine((value) => value !== null, "Обязательное поле"),
+  placeOfBirth: z.string().min(4, "required"),
+  nationality: z.string().min(1, "required"),
   partyAffiliation: z.string(),
-  education: z.string(),
-  specialization: z.string(),
+  education: z.string().min(1, "required"),
+  specialization: z.string().min(1, "required"),
   foreignLanguages: z.array(foreignLanguageSchema),
-  militaryRank: z.string(),
+  militaryRank: z.string().min(1, "required"),
   stateAndDepartmentalAwards: z.string(),
-  workExperience: z
-    .array(
-      z.object({
-        organization: z.string().min(1, "Organization name is required"),
-        dateFrom: z.date().nullable(),
-        dateTo: z.date().nullable(),
-      })
-    )
-    .min(1, "At least one work experience entry is required"),
-  informationAboutRelatives: z
-    .array(
-      z.object({
-        fullName: z.string().min(1, "Full name is required"),
-        degreeOfKinship: z.string().min(1, "Degree Of Kinship is required"),
-        dateOfBirth: z.date().nullable(),
-        placeOfWork: z.string(),
-        position: z.string(),
-        address: z.string(),
-      })
-    )
-    .min(1, "At least one relative must be added"),
+  workExperience: z.array(
+    z.object({
+      organization: z.string(),
+      dateFrom: z.date().nullable(),
+      dateTo: z.date().nullable(),
+    })
+  ),
+  informationAboutRelatives: z.array(
+    z.object({
+      fullName: z.string(),
+      degreeOfKinship: z.string(),
+      dateOfBirth: z.date().nullable(),
+      placeOfWork: z.string(),
+      position: z.string(),
+      address: z.string(),
+    })
+  ),
 });
 
 export const PersonalDetails = () => {
+  const { formState, setFormState, setCurrentScreen } = useAppContext();
+
   function submitForm(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    setFormState(values);
+    setCurrentScreen(3);
   }
 
   return (
     <div className="w-full mx-auto">
-      <Form
-        onSubmit={submitForm}
-        initialValues={{
-          fullName: "",
-          dateOfBirth: new Date(),
-          placeOfBirth: "",
-          nationality: "",
-          partyAffiliation: "",
-          education: "",
-          specialization: "",
-          foreignLanguages: [],
-          militaryRank: "",
-          stateAndDepartmentalAwards: "",
-          workExperience: [
-            {
-              organization: "",
-              dateFrom: null,
-              dateTo: null,
-            },
-          ],
-          informationAboutRelatives: [
-            {
-              fullName: "",
-              degreeOfKinship: "relative",
-              dateOfBirth: null,
-              placeOfWork: "",
-              position: "",
-              address: "",
-            },
-          ],
-        }}
-      />
+      <Form onSubmit={submitForm} initialValues={formState} />
     </div>
   );
 };
