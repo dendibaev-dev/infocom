@@ -1,9 +1,7 @@
-import { useState } from "react";
 import { ChooseTemplate } from "./features/choose-template";
 import { Stepper, StepperContent } from "@/components/ui/stepper";
 import { PersonalDetails } from "./features/personal-details";
 import { GenerateDocument } from "./features/generate-document";
-import { Provider } from "./provider";
 import { useAppContext } from "./hooks/useAppContext";
 
 const steps = [
