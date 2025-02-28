@@ -98,6 +98,7 @@ export const EditableTable: FC<Props> = memo(
                 size="icon"
                 onClick={() => remove(index)}
                 className="hover:bg-destructive hover:text-destructive-foreground"
+                type="button"
               >
                 <Trash2 className="w-4 h-4" />
                 <span className="sr-only">Delete row</span>
@@ -112,7 +113,7 @@ export const EditableTable: FC<Props> = memo(
       <div className="w-full">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-sm font-medium">{title}</h2>
-          <Button onClick={append} variant="outline" size="sm">
+          <Button onClick={append} variant="outline" size="sm" type="button">
             <Plus className="w-4 h-4 mr-2" />
             Add Row
           </Button>

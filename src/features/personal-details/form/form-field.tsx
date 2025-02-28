@@ -30,11 +30,11 @@ const fields = [
     label: "Nationality",
     type: "select",
     options: [
-      { label: "Uzbek", value: "1" },
-      { label: "Karakalpak", value: "2" },
-      { label: "Kazakh", value: "3" },
-      { label: "Russian", value: "4" },
-      { label: "Other", value: "5" },
+      { label: "Uzbek", value: "Uzbek" },
+      { label: "Karakalpak", value: "Karakalpak" },
+      { label: "Kazakh", value: "Kazakh" },
+      { label: "Russian", value: "Russian" },
+      { label: "Other", value: "Other" },
     ],
   },
   {
@@ -48,9 +48,9 @@ const fields = [
     label: "Education",
     type: "select",
     options: [
-      { label: "Secondary", value: "1" },
-      { label: "Higher", value: "2" },
-      { label: "Candidate of Sciences", value: "3" },
+      { label: "Secondary", value: "Secondary" },
+      { label: "Higher", value: "Higher" },
+      { label: "Candidate of Sciences", value: "Candidate of Sciences" },
     ],
   },
   {
@@ -64,9 +64,9 @@ const fields = [
     label: "Foreign Languages",
     type: "multiselect",
     options: [
-      { label: "English", value: "english" },
-      { label: "German", value: "deutsch" },
-      { label: "French", value: "franch" },
+      { label: "English", value: "English" },
+      { label: "German", value: "Deutsch" },
+      { label: "French", value: "Franch" },
     ],
     placeholder: "Foreign language proficiency",
   },
@@ -75,10 +75,10 @@ const fields = [
     label: "Military Rank",
     type: "select",
     options: [
-      { label: "None", value: "1" },
-      { label: "Private", value: "2" },
-      { label: "Sergeant", value: "3" },
-      { label: "Officer", value: "4" },
+      { label: "None", value: "None" },
+      { label: "Private", value: "Private" },
+      { label: "Sergeant", value: "Sergeant" },
+      { label: "Officer", value: "Officer" },
     ],
   },
   {

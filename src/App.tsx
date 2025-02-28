@@ -25,7 +25,7 @@ function App() {
   const { currentScreen, setCurrentScreen } = useAppContext();
 
   return (
-    <div className="container mt-4">
+    <div className="container my-6">
       <Stepper
         steps={steps}
         currentStep={currentScreen}

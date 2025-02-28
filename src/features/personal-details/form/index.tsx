@@ -37,14 +37,18 @@ export const Form: FC<Props> = ({ initialValues, onSubmit }) => {
         <InfoRelativesTable form={form} className="col-span-2" />
         <Separator className="col-span-2" />
         <div className="col-span-2 flex items-center gap-2">
-          <Button variant="outline" onClick={() => setCurrentScreen(1)}>
+          <Button
+            variant="outline"
+            onClick={() => setCurrentScreen(1)}
+            type="button"
+          >
             Go back
           </Button>
           <Button
             className="ml-auto"
             variant="outline"
-            onClick={(event) => {
-              event.preventDefault();
+            type="button"
+            onClick={() => {
               form.reset(initialFormState);
               setFormState(initialFormState);
             }}
